@@ -44,23 +44,50 @@ document.getElementById('symbol-form').addEventListener('submit', async function
   renderVersions(data.versions);
   renderVersionComparison(data.versions);
 
-  // Demo: fake transactions/trade log data
-  const demoTransactions = [
-    {
-      trade_time: '2026-03-14 10:45', timeframe: '15m', side: 'BUY', action: 'Close', position: 'short', price: 70565.38, pnl: 25.15, balance: 12529.17, exit_type: 'SL'
-    },
-    {
-      trade_time: '2026-03-14 09:15', timeframe: '15m', side: 'SELL', action: 'Open', position: 'short', price: 70678.56, pnl: null, balance: 12529.17, exit_type: null
-    },
-    {
-      trade_time: '2026-03-08 18:05', timeframe: '5m', side: 'BUY', action: 'Close', position: 'short', price: null, pnl: 548.80, balance: 12245.35, exit_type: 'TP'
-    }
-  ];
-  renderTransactionsTable(demoTransactions);
-  renderTradeLogTable(demoTransactions);
 
-  // Load paper trading results for the symbol
-  loadPaperResults(symbol);
+    const addInput = document.getElementById('add-symbol-input');
+    const newSymbol = addInput.value.trim().toUpperCase();
+    if (newSymbol) {
+      // Add symbol to backend (replace with real API call)
+      await addSymbolToBackend(newSymbol);
+      await populateSymbolDropdown();
+      dropdown.value = newSymbol;
+      addInput.value = '';
+      // Optionally trigger automation for backtest/paper trading here
+      // ...
+    }
+    if (!symbol) return;
+    const response = await fetch('sample_output.json');
+    const data = await response.json();
+    renderSummary(data);
+    renderVersions(data.versions);
+    renderVersionComparison(data.versions);
+  
+    // Demo: fake transactions/trade log data
+    const demoTransactions = [
+      {
+        trade_time: '2026-03-14 10:45', timeframe: '15m', side: 'BUY', action: 'Close', position: 'short', price: 70565.38, pnl: 25.15, balance: 12529.17, exit_type: 'SL'
+      },
+      {
+        trade_time: '2026-03-14 09:15', timeframe: '15m', side: 'SELL', action: 'Open', position: 'short', price: 70678.56, pnl: null, balance: 12529.17, exit_type: null
+      },
+      {
+        trade_time: '2026-03-08 18:05', timeframe: '5m', side: 'BUY', action: 'Close', position: 'short', price: null, pnl: 548.80, balance: 12245.35, exit_type: 'TP'
+      }
+    ];
+    renderTransactionsTable(demoTransactions);
+    renderTradeLogTable(demoTransactions);
+  
+    // Load paper trading results for the symbol
+    loadPaperResults(symbol);
+  });
+
+  async function addSymbolToBackend(symbol) {
+    // Replace with real API call to backend to add symbol
+    // For now, just log
+    console.log('Add symbol to backend:', symbol);
+    // Example: await fetch('/backend/add_symbol.py', { method: 'POST', body: JSON.stringify({symbol}) });
+  }
 });
 
 function renderTransactionsTable(transactions) {
