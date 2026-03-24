@@ -1,3 +1,262 @@
+/* --- APM Dashboard Layout Revamp --- */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6fa;
+  margin: 0;
+  padding: 0;
+}
+
+.main-header {
+  background: #1976d2;
+  color: #fff;
+  padding: 0 0 8px 0;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px 0 24px;
+}
+.main-header h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+}
+.symbol-form {
+  display: flex;
+  gap: 10px;
+}
+.symbol-form input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: #e3f2fd;
+  color: #1976d2;
+}
+.symbol-form button {
+  padding: 8px 18px;
+  background: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.symbol-form button:hover {
+  background: #f57c00;
+}
+
+.dashboard-main {
+  max-width: 1100px;
+  margin: 32px auto 0 auto;
+  padding: 0 24px 40px 24px;
+}
+
+section {
+  margin-bottom: 38px;
+}
+
+h2 {
+  font-size: 1.3rem;
+  color: #1976d2;
+  margin-bottom: 16px;
+  margin-top: 0;
+  letter-spacing: 0.5px;
+}
+
+.summary-section, .versions-section, .version-comparison-section, .charts-section, .transactions-section, .trade-log-section, .paper-summary-section, .paper-trades-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(25, 118, 210, 0.07);
+  padding: 22px 20px 18px 20px;
+}
+
+.summary-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  background: #e3f2fd;
+  border-radius: 8px;
+  padding: 22px 20px 18px 20px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.summary-stat {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-right: 18px;
+  color: #1976d2;
+}
+.summary-label {
+  font-size: 0.98rem;
+  color: #444;
+  margin-right: 6px;
+}
+
+.versions-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  justify-content: flex-start;
+}
+.version-card {
+  background: #f5faff;
+  border-left: 6px solid #1976d2;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(25, 118, 210, 0.07);
+  padding: 12px 16px 10px 14px;
+  flex: 1 1 210px;
+  min-width: 180px;
+  margin-bottom: 8px;
+  transition: box-shadow 0.2s;
+}
+.version-card:hover {
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.13);
+}
+.version-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #1976d2;
+  font-weight: 700;
+}
+.version-card .quick-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-bottom: 6px;
+}
+.quick-stat {
+  font-size: 0.98rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #e3f2fd;
+  color: #1976d2;
+  margin-right: 4px;
+}
+.quick-stat.positive {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+.quick-stat.negative {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.version-comparison-section {
+  margin-top: 32px;
+}
+.version-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.version-comparison-table th, .version-comparison-table td {
+  border: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  text-align: center;
+}
+.version-comparison-table th {
+  background: #1976d2;
+  color: #fff;
+  font-weight: 600;
+}
+.version-comparison-table tr:nth-child(even) {
+  background: #f1f7fb;
+}
+
+.charts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.chart-placeholder {
+  background: #fffde7;
+  border: 1.5px dashed #ff9800;
+  color: #ff9800;
+  border-radius: 6px;
+  padding: 32px 0;
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.transactions-section, .trade-log-section {
+  margin-top: 32px;
+}
+.transactions-table, .trade-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.transactions-table th, .transactions-table td,
+.trade-log-table th, .trade-log-table td {
+  border: 1px solid #e0e0e0;
+  padding: 7px 10px;
+  text-align: center;
+}
+.transactions-table th, .trade-log-table th {
+  background: #ff9800;
+  color: #fff;
+  font-weight: 600;
+}
+.transactions-table tr:nth-child(even), .trade-log-table tr:nth-child(even) {
+  background: #fff3e0;
+}
+
+.paper-summary-section {
+  margin-top: 36px;
+  background: #fffde7;
+  border-radius: 6px;
+  padding: 18px 16px;
+  box-shadow: 0 1px 4px rgba(255, 193, 7, 0.07);
+  color: #795548;
+}
+.paper-summary-section h2 {
+  margin-top: 0;
+  color: #ff9800;
+}
+.paper-trades-section {
+  margin-top: 18px;
+}
+.paper-trades-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.paper-trades-table th, .paper-trades-table td {
+  border: 1px solid #ffe0b2;
+  padding: 7px 10px;
+  text-align: center;
+}
+.paper-trades-table th {
+  background: #ff9800;
+  color: #fff;
+  font-weight: 600;
+}
+.paper-trades-table tr:nth-child(even) {
+  background: #fff3e0;
+}
 .paper-summary-section {
   margin-top: 36px;
   background: #fffde7;

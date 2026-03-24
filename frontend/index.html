@@ -3,29 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TradingCopilot Dashboard</title>
+  <title>APM Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>TradingCopilot Dashboard</h1>
-    <form id="symbol-form">
-      <label for="symbol">Enter Symbol:</label>
-      <input type="text" id="symbol" name="symbol" required>
-      <button type="submit">Run Backtest</button>
-    </form>
-    <div id="summary" class="summary-section">
-      <!-- Summary stats will appear here -->
+  <header class="main-header">
+    <div class="header-content">
+      <h1>APM Dashboard</h1>
+      <form id="symbol-form" class="symbol-form">
+        <select id="symbol-dropdown" name="symbol" required>
+          <option value="" disabled selected>Select Symbol</option>
+        </select>
+        <button type="submit">Run Backtest</button>
+      </form>
     </div>
-    <div id="versions" class="versions-section">
-      <!-- Version stats will appear here -->
-    </div>
-    <div id="version-comparison" class="version-comparison-section">
-      <!-- Version comparison table will appear here -->
-    </div>
-    <div id="paper-summary" class="paper-summary-section"></div>
-    <div id="paper-trades" class="paper-trades-section"></div>
-  </div>
+  </header>
+  <main class="dashboard-main">
+    <section id="summary" class="summary-section"></section>
+    <section id="versions" class="versions-section"></section>
+    <section id="version-comparison" class="version-comparison-section"></section>
+    <section id="charts" class="charts-section">
+      <h2>Charts</h2>
+      <div class="chart-placeholder">[Price Chart Placeholder]</div>
+      <div class="chart-placeholder">[Equity Curve Placeholder]</div>
+      <div class="chart-placeholder">[Monthly P&amp;L Placeholder]</div>
+    </section>
+    <section id="transactions" class="transactions-section">
+      <h2>All Transactions</h2>
+      <div id="transactions-table"></div>
+    </section>
+    <section id="trade-log" class="trade-log-section">
+      <h2>Trade Log</h2>
+      <div id="trade-log-table"></div>
+    </section>
+    <section id="paper-summary" class="paper-summary-section"></section>
+    <section id="paper-trades" class="paper-trades-section"></section>
+  </main>
   <script src="app.js"></script>
 </body>
 </html>

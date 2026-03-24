@@ -1,8 +1,42 @@
 // TradingCopilot Dashboard JS
 
+
+
+// On page load, fetch symbols and populate dropdown
+window.addEventListener('DOMContentLoaded', async function() {
+  await populateSymbolDropdown();
+});
+
+async function populateSymbolDropdown() {
+  const dropdown = document.getElementById('symbol-dropdown');
+  try {
+    // For demo: fetch from backend via local server or static file
+    // Replace with real API endpoint as needed
+    const resp = await fetch('backend/get_symbols.py');
+    const text = await resp.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      data = {symbols: []};
+    }
+    dropdown.innerHTML = '<option value="" disabled selected>Select Symbol</option>';
+    data.symbols.forEach(sym => {
+      const opt = document.createElement('option');
+      opt.value = sym;
+      opt.textContent = sym;
+      dropdown.appendChild(opt);
+    });
+  } catch (e) {
+    dropdown.innerHTML = '<option value="" disabled selected>No symbols found</option>';
+  }
+}
+
 document.getElementById('symbol-form').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const symbol = document.getElementById('symbol').value.trim();
+  const dropdown = document.getElementById('symbol-dropdown');
+  const symbol = dropdown.value;
+  if (!symbol) return;
   // For demo: fetch static JSON from backend (replace with real API call)
   const response = await fetch('sample_output.json');
   const data = await response.json();
@@ -10,9 +44,54 @@ document.getElementById('symbol-form').addEventListener('submit', async function
   renderVersions(data.versions);
   renderVersionComparison(data.versions);
 
+  // Demo: fake transactions/trade log data
+  const demoTransactions = [
+    {
+      trade_time: '2026-03-14 10:45', timeframe: '15m', side: 'BUY', action: 'Close', position: 'short', price: 70565.38, pnl: 25.15, balance: 12529.17, exit_type: 'SL'
+    },
+    {
+      trade_time: '2026-03-14 09:15', timeframe: '15m', side: 'SELL', action: 'Open', position: 'short', price: 70678.56, pnl: null, balance: 12529.17, exit_type: null
+    },
+    {
+      trade_time: '2026-03-08 18:05', timeframe: '5m', side: 'BUY', action: 'Close', position: 'short', price: null, pnl: 548.80, balance: 12245.35, exit_type: 'TP'
+    }
+  ];
+  renderTransactionsTable(demoTransactions);
+  renderTradeLogTable(demoTransactions);
+
   // Load paper trading results for the symbol
   loadPaperResults(symbol);
 });
+
+function renderTransactionsTable(transactions) {
+  const div = document.getElementById('transactions-table');
+  if (!transactions || transactions.length === 0) {
+    div.innerHTML = '<div style="color:#888;">No transactions found.</div>';
+    return;
+  }
+  let html = '<table class="transactions-table"><thead><tr>';
+  const headers = ['Time', 'Timeframe', 'Side', 'Action', 'Position', 'Price', 'PnL', 'Balance', 'Exit Type'];
+  html += headers.map(h => `<th>${h}</th>`).join('');
+  html += '</tr></thead><tbody>';
+  html += transactions.map(t => `<tr><td>${t.trade_time}</td><td>${t.timeframe}</td><td>${t.side}</td><td>${t.action}</td><td>${t.position}</td><td>${t.price !== null ? '$'+t.price.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '--'}</td><td>${t.pnl !== null ? (t.pnl >= 0 ? '+' : '') + '$' + t.pnl.toFixed(2) : '--'}</td><td>${t.balance !== null ? '$'+t.balance.toFixed(2) : '--'}</td><td>${t.exit_type ?? '--'}</td></tr>`).join('');
+  html += '</tbody></table>';
+  div.innerHTML = html;
+}
+
+function renderTradeLogTable(trades) {
+  const div = document.getElementById('trade-log-table');
+  if (!trades || trades.length === 0) {
+    div.innerHTML = '<div style="color:#888;">No trades found.</div>';
+    return;
+  }
+  let html = '<table class="trade-log-table"><thead><tr>';
+  const headers = ['Time', 'Timeframe', 'Side', 'Action', 'Position', 'Price', 'PnL', 'Balance', 'Exit Type'];
+  html += headers.map(h => `<th>${h}</th>`).join('');
+  html += '</tr></thead><tbody>';
+  html += trades.map(t => `<tr><td>${t.trade_time}</td><td>${t.timeframe ?? '--'}</td><td>${t.side}</td><td>${t.action}</td><td>${t.position}</td><td>${t.price !== null ? '$'+t.price.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '--'}</td><td>${t.pnl !== null ? (t.pnl >= 0 ? '+' : '') + '$' + t.pnl.toFixed(2) : '--'}</td><td>${t.balance !== null ? '$'+t.balance.toFixed(2) : '--'}</td><td>${t.exit_type ?? '--'}</td></tr>`).join('');
+  html += '</tbody></table>';
+  div.innerHTML = html;
+}
 
 async function loadPaperResults(symbol) {
   let resp;
