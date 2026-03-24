@@ -1,12 +1,17 @@
+
 import sys
 import alpaca_trade_api as tradeapi
 import time
 import sqlite3
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
-API_KEY = 'YOUR_API_KEY'
-API_SECRET = 'YOUR_API_SECRET'
-BASE_URL = 'https://paper-api.alpaca.markets'
+load_dotenv()
+
+API_KEY = os.environ.get('APCA_API_KEY_ID')
+API_SECRET = os.environ.get('APCA_API_SECRET_KEY')
+BASE_URL = os.environ.get('APCA_API_BASE_URL', 'https://paper-api.alpaca.markets')
 DB_PATH = 'backend/tradingcopilot.db'
 
 api = tradeapi.REST(API_KEY, API_SECRET, BASE_URL, api_version='v2')
