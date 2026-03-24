@@ -1,0 +1,10 @@
+#Ignore Files/Paths
+.vscode
+.nvm
+.venv
+
+node_modules
+.env
+.env.example
+__pycache__/
+*.pyc
