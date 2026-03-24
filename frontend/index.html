@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradingCopilot Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>TradingCopilot Dashboard</h1>
+    <form id="symbol-form">
+      <label for="symbol">Enter Symbol:</label>
+      <input type="text" id="symbol" name="symbol" required>
+      <button type="submit">Run Backtest</button>
+    </form>
+    <div id="summary" class="summary-section">
+      <!-- Summary stats will appear here -->
+    </div>
+    <div id="versions" class="versions-section">
+      <!-- Version stats will appear here -->
+    </div>
+    <div id="version-comparison" class="version-comparison-section">
+      <!-- Version comparison table will appear here -->
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6fa;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+}
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+form {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+button {
+  padding: 8px 18px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #125ea2;
+}
+.summary-section, .versions-section {
+  margin-top: 24px;
+}
+.summary-section {
+  background: #e3f2fd;
+  border-radius: 6px;
+  padding: 18px 16px;
+}
+.versions-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+}
+.version-card {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 14px 12px;
+  flex: 1 1 220px;
+  min-width: 200px;
+}
+.version-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #1976d2;
+}
+
+.version-comparison-section {
+  margin-top: 32px;
+}
+.version-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.version-comparison-table th, .version-comparison-table td {
+  border: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  text-align: center;
+}
+.version-comparison-table th {
+  background: #1976d2;
+  color: #fff;
+  font-weight: 600;
+}
+.version-comparison-table tr:nth-child(even) {
+  background: #f1f7fb;
+}
