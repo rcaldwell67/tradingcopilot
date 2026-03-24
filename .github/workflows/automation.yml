@@ -1,0 +1,29 @@
+name: TradingCopilot Automation
+on:
+  push:
+    paths:
+      - 'symbols.json'
+jobs:
+  run-automation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+      - name: Run automation for all symbols
+        run: |
+          python backend/process_all_symbols.py
+      - name: Commit and push results
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add frontend/*.json
+          git commit -m 'Update trading results [skip ci]' || echo 'No changes to commit'
+          git push
