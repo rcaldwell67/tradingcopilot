@@ -9,8 +9,66 @@ document.getElementById('symbol-form').addEventListener('submit', async function
   renderSummary(data);
   renderVersions(data.versions);
   renderVersionComparison(data.versions);
+
+  // Load paper trading results for the symbol
+  loadPaperResults(symbol);
 });
 
+async function loadPaperResults(symbol) {
+  let resp;
+  try {
+    resp = await fetch('paper_results.json');
+  } catch (e) {
+    renderPaperSummary({error: 'Could not load paper trading results.'});
+    renderPaperTrades([]);
+    return;
+  }
+  let pdata;
+  try {
+    pdata = await resp.json();
+  } catch (e) {
+    renderPaperSummary({error: 'Invalid paper trading results.'});
+    renderPaperTrades([]);
+    return;
+  }
+  if (pdata.error) {
+    renderPaperSummary({error: pdata.error});
+    renderPaperTrades([]);
+    return;
+  }
+  renderPaperSummary(pdata.summary);
+  renderPaperTrades(pdata.trades);
+}
+
+function renderPaperSummary(summary) {
+  const div = document.getElementById('paper-summary');
+  if (summary.error) {
+    div.innerHTML = `<h2>Paper Trading</h2><p style="color:#c62828;">${summary.error}</p>`;
+    return;
+  }
+  div.innerHTML = `
+    <h2>Paper Trading Summary</h2>
+    <div><strong>Beginning Balance:</strong> $${summary.beginning_balance?.toFixed(2) ?? '--'}</div>
+    <div><strong>Ending Balance:</strong> $${summary.ending_balance?.toFixed(2) ?? '--'}</div>
+    <div><strong>Total Equity:</strong> $${summary.total_equity?.toFixed(2) ?? '--'}</div>
+    <div><strong>Last Update:</strong> ${summary.last_update ?? '--'}</div>
+  `;
+}
+
+function renderPaperTrades(trades) {
+  const div = document.getElementById('paper-trades');
+  if (!trades || trades.length === 0) {
+    div.innerHTML = '';
+    return;
+  }
+  let html = '<h2>Paper Trading Log</h2>';
+  html += '<table class="paper-trades-table"><thead><tr>';
+  html += ['Time', 'Side', 'Action', 'Position', 'Price', 'PnL', 'Balance', 'Exit Type'].map(h => `<th>${h}</th>`).join('');
+  html += '</tr></thead><tbody>';
+  html += trades.map(t => `<tr><td>${t.trade_time}</td><td>${t.side}</td><td>${t.action}</td><td>${t.position}</td><td>${t.price}</td><td>${t.pnl}</td><td>${t.balance}</td><td>${t.exit_type}</td></tr>`).join('');
+  html += '</tbody></table>';
+  div.innerHTML = html;
+}
 function renderSummary(data) {
   const summaryDiv = document.getElementById('summary');
   summaryDiv.innerHTML = `

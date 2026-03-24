@@ -1,3 +1,38 @@
+.paper-summary-section {
+  margin-top: 36px;
+  background: #fffde7;
+  border-radius: 6px;
+  padding: 18px 16px;
+  box-shadow: 0 1px 4px rgba(255, 193, 7, 0.07);
+  color: #795548;
+}
+.paper-summary-section h2 {
+  margin-top: 0;
+  color: #ff9800;
+}
+.paper-trades-section {
+  margin-top: 18px;
+}
+.paper-trades-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.paper-trades-table th, .paper-trades-table td {
+  border: 1px solid #ffe0b2;
+  padding: 7px 10px;
+  text-align: center;
+}
+.paper-trades-table th {
+  background: #ff9800;
+  color: #fff;
+  font-weight: 600;
+}
+.paper-trades-table tr:nth-child(even) {
+  background: #fff3e0;
+}
 body {
   font-family: Arial, sans-serif;
   background: #f4f6fa;
