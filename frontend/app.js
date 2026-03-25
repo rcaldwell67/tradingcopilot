@@ -13,131 +13,65 @@ async function populateSymbolDropdown() {
     // For demo: fetch from backend via local server or static file
     // Replace with real API endpoint as needed
     const resp = await fetch('backend/get_symbols.py');
-    const text = await resp.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      data = {symbols: []};
-    }
-    dropdown.innerHTML = '<option value="" disabled selected>Select Symbol</option>';
-    data.symbols.forEach(sym => {
-      const opt = document.createElement('option');
-      opt.value = sym;
-      opt.textContent = sym;
-      dropdown.appendChild(opt);
+    // APM Dashboard JS Starter
+
+    window.addEventListener('DOMContentLoaded', function() {
+      // Populate symbol dropdown (stub)
+      const dropdown = document.getElementById('symbol-dropdown');
+      dropdown.innerHTML = '<option value="BTCUSD">BTCUSD</option><option value="ETHUSD">ETHUSD</option>';
+
+      // Handle form submit (stub)
+      document.getElementById('symbol-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // TODO: Fetch and render data for selected symbol
+        alert('Run backtest for: ' + dropdown.value);
+      });
+
+      // Render demo transactions table
+      renderTransactionsTable([
+        { time: '2026-03-14 10:45', timeframe: '15m', side: 'BUY', action: 'Close', position: 'short', price: 70565.38, pnl: 25.15, balance: 12529.17, exit_type: 'SL' },
+        { time: '2026-03-14 09:15', timeframe: '15m', side: 'SELL', action: 'Open', position: 'short', price: 70678.56, pnl: null, balance: 12529.17, exit_type: null }
+      ]);
+
+      // Render demo trade log table
+      renderTradeLogTable([
+        { timeframe: '15m', entry: 'Mar 14, 26', exit: 'Mar 14, 26', position: 'short', entry_price: 70678.56, exit_price: 70565.38, pnl: 25.15, exit_type: 'SL', balance: 12554.32 }
+      ]);
     });
-  } catch (e) {
-    dropdown.innerHTML = '<option value="" disabled selected>No symbols found</option>';
-  }
-}
 
-document.getElementById('symbol-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const dropdown = document.getElementById('symbol-dropdown');
-  const symbol = dropdown.value;
-  if (!symbol) return;
-  // For demo: fetch static JSON from backend (replace with real API call)
-  const response = await fetch('sample_output.json');
-  const data = await response.json();
-  renderSummary(data);
-  renderVersions(data.versions);
-  renderVersionComparison(data.versions);
-
-
-    const addInput = document.getElementById('add-symbol-input');
-    const newSymbol = addInput.value.trim().toUpperCase();
-    if (newSymbol) {
-      // Add symbol to backend (replace with real API call)
-      await addSymbolToBackend(newSymbol);
-      await populateSymbolDropdown();
-      dropdown.value = newSymbol;
-      addInput.value = '';
-      // Optionally trigger automation for backtest/paper trading here
-      // ...
-    }
-    if (!symbol) return;
-    const response = await fetch('sample_output.json');
-    const data = await response.json();
-    renderSummary(data);
-    renderVersions(data.versions);
-    renderVersionComparison(data.versions);
-  
-    // Demo: fake transactions/trade log data
-    const demoTransactions = [
-      {
-        trade_time: '2026-03-14 10:45', timeframe: '15m', side: 'BUY', action: 'Close', position: 'short', price: 70565.38, pnl: 25.15, balance: 12529.17, exit_type: 'SL'
-      },
-      {
-        trade_time: '2026-03-14 09:15', timeframe: '15m', side: 'SELL', action: 'Open', position: 'short', price: 70678.56, pnl: null, balance: 12529.17, exit_type: null
-      },
-      {
-        trade_time: '2026-03-08 18:05', timeframe: '5m', side: 'BUY', action: 'Close', position: 'short', price: null, pnl: 548.80, balance: 12245.35, exit_type: 'TP'
+    function renderTransactionsTable(transactions) {
+      const div = document.getElementById('transactions-table');
+      if (!transactions || transactions.length === 0) {
+        div.innerHTML = '<div style="color:#888;">No transactions found.</div>';
+        return;
       }
-    ];
-    renderTransactionsTable(demoTransactions);
-    renderTradeLogTable(demoTransactions);
-  
-    // Load paper trading results for the symbol
-    loadPaperResults(symbol);
-  });
+      let html = '<table class="transactions-table"><thead><tr>';
+      const headers = ['Time', 'Timeframe', 'Side', 'Action', 'Position', 'Price', 'PnL', 'Balance', 'Exit Type'];
+      headers.forEach(h => html += `<th>${h}</th>`);
+      html += '</tr></thead><tbody>';
+      transactions.forEach(t => {
+        html += `<tr><td>${t.time}</td><td>${t.timeframe}</td><td>${t.side}</td><td>${t.action}</td><td>${t.position}</td><td>${t.price ?? ''}</td><td>${t.pnl ?? ''}</td><td>${t.balance ?? ''}</td><td>${t.exit_type ?? ''}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      div.innerHTML = html;
+    }
 
-  async function addSymbolToBackend(symbol) {
-    // Replace with real API call to backend to add symbol
-    // For now, just log
-    console.log('Add symbol to backend:', symbol);
-    // Example: await fetch('/backend/add_symbol.py', { method: 'POST', body: JSON.stringify({symbol}) });
-  }
-});
-
-function renderTransactionsTable(transactions) {
-  const div = document.getElementById('transactions-table');
-  if (!transactions || transactions.length === 0) {
-    div.innerHTML = '<div style="color:#888;">No transactions found.</div>';
-    return;
-  }
-  let html = '<table class="transactions-table"><thead><tr>';
-  const headers = ['Time', 'Timeframe', 'Side', 'Action', 'Position', 'Price', 'PnL', 'Balance', 'Exit Type'];
-  html += headers.map(h => `<th>${h}</th>`).join('');
-  html += '</tr></thead><tbody>';
-  html += transactions.map(t => `<tr><td>${t.trade_time}</td><td>${t.timeframe}</td><td>${t.side}</td><td>${t.action}</td><td>${t.position}</td><td>${t.price !== null ? '$'+t.price.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '--'}</td><td>${t.pnl !== null ? (t.pnl >= 0 ? '+' : '') + '$' + t.pnl.toFixed(2) : '--'}</td><td>${t.balance !== null ? '$'+t.balance.toFixed(2) : '--'}</td><td>${t.exit_type ?? '--'}</td></tr>`).join('');
-  html += '</tbody></table>';
-  div.innerHTML = html;
-}
-
-function renderTradeLogTable(trades) {
-  const div = document.getElementById('trade-log-table');
-  if (!trades || trades.length === 0) {
-    div.innerHTML = '<div style="color:#888;">No trades found.</div>';
-    return;
-  }
-  let html = '<table class="trade-log-table"><thead><tr>';
-  const headers = ['Time', 'Timeframe', 'Side', 'Action', 'Position', 'Price', 'PnL', 'Balance', 'Exit Type'];
-  html += headers.map(h => `<th>${h}</th>`).join('');
-  html += '</tr></thead><tbody>';
-  html += trades.map(t => `<tr><td>${t.trade_time}</td><td>${t.timeframe ?? '--'}</td><td>${t.side}</td><td>${t.action}</td><td>${t.position}</td><td>${t.price !== null ? '$'+t.price.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '--'}</td><td>${t.pnl !== null ? (t.pnl >= 0 ? '+' : '') + '$' + t.pnl.toFixed(2) : '--'}</td><td>${t.balance !== null ? '$'+t.balance.toFixed(2) : '--'}</td><td>${t.exit_type ?? '--'}</td></tr>`).join('');
-  html += '</tbody></table>';
-  div.innerHTML = html;
-}
-
-async function loadPaperResults(symbol) {
-  let resp;
-  try {
-    resp = await fetch('paper_results.json');
-  } catch (e) {
-    renderPaperSummary({error: 'Could not load paper trading results.'});
-    renderPaperTrades([]);
-    return;
-  }
-  let pdata;
-  try {
-    pdata = await resp.json();
-  } catch (e) {
-    renderPaperSummary({error: 'Invalid paper trading results.'});
-    renderPaperTrades([]);
-    return;
-  }
-  if (pdata.error) {
+    function renderTradeLogTable(trades) {
+      const div = document.getElementById('trade-log-table');
+      if (!trades || trades.length === 0) {
+        div.innerHTML = '<div style="color:#888;">No trades found.</div>';
+        return;
+      }
+      let html = '<table class="trade-log-table"><thead><tr>';
+      const headers = ['Timeframe', 'Entry', 'Exit', 'Position', 'Entry Price', 'Exit Price', 'PnL', 'Exit Type', 'Balance'];
+      headers.forEach(h => html += `<th>${h}</th>`);
+      html += '</tr></thead><tbody>';
+      trades.forEach(t => {
+        html += `<tr><td>${t.timeframe}</td><td>${t.entry}</td><td>${t.exit}</td><td>${t.position}</td><td>${t.entry_price ?? ''}</td><td>${t.exit_price ?? ''}</td><td>${t.pnl ?? ''}</td><td>${t.exit_type ?? ''}</td><td>${t.balance ?? ''}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      div.innerHTML = html;
+    }
     renderPaperSummary({error: pdata.error});
     renderPaperTrades([]);
     return;

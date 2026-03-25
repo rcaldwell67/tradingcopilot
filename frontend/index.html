@@ -8,25 +8,22 @@
 </head>
 <body>
   <header class="main-header">
-    <div class="header-content">
-      <h1>APM Dashboard</h1>
-      <form id="symbol-form" class="symbol-form">
-        <select id="symbol-dropdown" name="symbol" required>
-          <option value="" disabled selected>Select Symbol</option>
-        </select>
-        <input type="text" id="add-symbol-input" placeholder="Add Symbol" autocomplete="off" style="width:120px;" />
-        <button type="submit">Run Backtest</button>
-      </form>
-    </div>
+    <h1>APM Dashboard</h1>
+    <form id="symbol-form">
+      <select id="symbol-dropdown" name="symbol" required>
+        <option value="" disabled selected>Select Symbol</option>
+      </select>
+      <button type="submit">Run Backtest</button>
+    </form>
   </header>
-  <main class="dashboard-main">
+  <main>
     <section id="summary" class="summary-section"></section>
-    <section id="versions" class="versions-section"></section>
-    <section id="version-comparison" class="version-comparison-section"></section>
     <section id="charts" class="charts-section">
-      <h2>Charts</h2>
+      <h2>Price Chart</h2>
       <div class="chart-placeholder">[Price Chart Placeholder]</div>
+      <h2>Equity Curve</h2>
       <div class="chart-placeholder">[Equity Curve Placeholder]</div>
+      <h2>Monthly P&amp;L</h2>
       <div class="chart-placeholder">[Monthly P&amp;L Placeholder]</div>
     </section>
     <section id="transactions" class="transactions-section">
@@ -37,8 +34,7 @@
       <h2>Trade Log</h2>
       <div id="trade-log-table"></div>
     </section>
-    <section id="paper-summary" class="paper-summary-section"></section>
-    <section id="paper-trades" class="paper-trades-section"></section>
+    <section id="version-comparison" class="version-comparison-section"></section>
   </main>
   <script src="app.js"></script>
 </body>
