@@ -16,15 +16,38 @@ async function populateSymbolDropdown() {
     // APM Dashboard JS Starter
 
     window.addEventListener('DOMContentLoaded', function() {
-      // Populate symbol dropdown (stub)
+      // Populate symbol dropdown (stub/demo)
       const dropdown = document.getElementById('symbol-dropdown');
       dropdown.innerHTML = '<option value="BTCUSD">BTCUSD</option><option value="ETHUSD">ETHUSD</option>';
 
-      // Handle form submit (stub)
-      document.getElementById('symbol-form').addEventListener('submit', function(e) {
+      // Handle Add Symbol button
+      document.getElementById('symbol-form').addEventListener('submit', async function(e) {
         e.preventDefault();
-        // TODO: Fetch and render data for selected symbol
-        alert('Run backtest for: ' + dropdown.value);
+        const addInput = document.getElementById('add-symbol-input');
+        const newSymbol = addInput.value.trim().toUpperCase();
+        if (!newSymbol) {
+          alert('Please enter a symbol to add.');
+          return;
+        }
+        try {
+          const response = await fetch('/api/add_symbol', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ symbol: newSymbol })
+          });
+          const result = await response.json();
+          if (result.success) {
+            alert('Symbol added: ' + newSymbol);
+            addInput.value = '';
+            // Optionally update dropdown
+            // dropdown.innerHTML += `<option value="${newSymbol}">${newSymbol}</option>`;
+            // TODO: Refresh tables here
+          } else {
+            alert('Error adding symbol: ' + (result.error || 'Unknown error'));
+          }
+        } catch (err) {
+          alert('Request failed: ' + err);
+        }
       });
 
       // Render demo transactions table
